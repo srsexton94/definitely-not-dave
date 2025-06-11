@@ -10,6 +10,13 @@
 
 h1 {
   text-align: center;
+  margin: 2rem auto;
+  font-family: "Courier New", Courier, monospace;
+}
+
+.page-content {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .gameboard {
@@ -18,5 +25,15 @@ h1 {
   grid-template-rows: repeat(4, var(--cardSize));
   grid-gap: 1rem;
   width: max-content;
-  margin: auto;
+}
+
+.controls {
+  border: 1px solid black;
+  text-align: center;
+  width: 20rem;
+  position: relative;
+}
+
+.hidden {
+  display: none;
 }

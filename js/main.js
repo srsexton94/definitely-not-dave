@@ -45,12 +45,16 @@ const NAMES = [
 ];
 
 const gameboard = document.querySelector("section.gameboard");
+const controls = document.querySelector("section.controls");
+const startButton = document.querySelector("button.start");
+const endButton = document.querySelector("button.end");
+
 let boardArr;
 
 function createCardHTML(src, alt) {
   return `
     <div class="card">
-      <div class="inner flipped">
+      <div class="inner">
         <div class="front"></div>
         <img
           class="back"
@@ -77,6 +81,15 @@ function getRandomArrayEl(array) {
   return array[randomIndex];
 }
 
+function toggleGame() {
+  startButton.classList.toggle("hidden");
+  endButton.classList.toggle("hidden");
+  document
+    .querySelectorAll("div.inner")
+    .forEach((card) => card.classList.toggle("flipped"));
+  document.querySelector("form").classList.toggle("hidden");
+}
+
 window.addEventListener("load", function () {
   boardArr = NAMES.map((name) => {
     const isFacingLeft = Math.random() >= 0.5;
@@ -101,6 +114,9 @@ window.addEventListener("load", function () {
   });
 });
 
-gameboard.addEventListener("click", function (event) {
-  event.target.parentNode.classList.toggle("flipped");
-});
+// gameboard.addEventListener("click", function (event) {
+//   event.target.parentNode.classList.toggle("flipped");
+// });
+
+startButton.addEventListener("click", toggleGame);
+endButton.addEventListener("click", toggleGame);

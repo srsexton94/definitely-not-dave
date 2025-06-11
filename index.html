@@ -7,10 +7,22 @@
     <link rel="icon" type="image/x-icon" href="images/favicon.ico" />
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/card.css" />
+    <link rel="stylesheet" href="css/buttons.css" />
     <script defer src="js/main.js"></script>
   </head>
   <body>
     <h1>Definitely Not Dave</h1>
-    <section class="gameboard"></section>
+    <div class="page-content">
+      <section class="gameboard"></section>
+      <section class="controls">
+        <button class="start">Start Game</button>
+        <form class="hidden">
+          
+          <h2>Who do they have?</h2>
+          <p>Select your guess on the board or ask a question below!</p>
+        </form>
+        <button class="end hidden">End Game</button>
+      </section>
+    </div>
   </body>
 </html>

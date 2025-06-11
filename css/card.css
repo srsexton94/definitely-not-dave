@@ -4,6 +4,10 @@
   perspective: 62.5rem;
 }
 
+.card img {
+  font-size: 0.75rem;
+}
+
 .inner {
   width: 100%;
   height: 100%;
