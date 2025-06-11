@@ -25,6 +25,11 @@ const HEAD_STYLES = [
   { code: "short4", description: "short hair", hasHeadCovering: false },
   { code: "turban", description: "a turban", hasHeadCovering: true },
 ];
+const FACIAL_HAIR = [
+  { code: "full", description: "a beard" },
+  { code: "goatee2", description: "a goatee" },
+  { code: "moustache6", description: "a moustache" },
+];
 const NAMES = [
   "Bailey",
   "Akira",
@@ -48,21 +53,25 @@ const gameboard = document.querySelector("section.gameboard");
 const controls = document.querySelector("section.controls");
 const startButton = document.querySelector("button.start");
 const endButton = document.querySelector("button.end");
+const selectionContainer = document.querySelector(".selected-cards");
 
-let boardArr;
+let boardArr, playerCard, computerCard;
 
-function createCardHTML(src, alt) {
+function createCardHTML(src, alt, label = "", isFlippedUp = false) {
   return `
-    <div class="card">
-      <div class="inner">
-        <div class="front"></div>
-        <img
-          class="back"
-          src="${src}"
-          alt="${alt}"
-        />
+    ${label ? "<div>" : ""}
+      <div class="card">
+        <div class="inner${isFlippedUp ? " flipped" : ""}">
+          <div class="front"></div>
+          <img
+            class="back"
+            src="${src}"
+            alt="${alt}"
+          />
+        </div>
       </div>
-    </div>
+    ${label ? `<p class="card-label">${label}</p>` : ""}
+    ${label ? "</div>" : ""}
   `;
 }
 
@@ -90,21 +99,49 @@ function toggleGame() {
   document.querySelector("form").classList.toggle("hidden");
 }
 
+function selectCards() {
+  playerCard = getRandomArrayEl(boardArr);
+  computerCard = getRandomArrayEl(boardArr);
+  const playerCardEl = createElementFromHTML(
+    createCardHTML(
+      playerCard.src,
+      playerCard.alt,
+      `Your card: ${playerCard.name}`,
+      true
+    )
+  );
+  const computerCardEl = createElementFromHTML(
+    createCardHTML(computerCard.src, computerCard.alt, `Their card: ???`)
+  );
+  selectionContainer.appendChild(playerCardEl);
+  selectionContainer.appendChild(computerCardEl);
+}
+
 window.addEventListener("load", function () {
   boardArr = NAMES.map((name) => {
     const isFacingLeft = Math.random() >= 0.5;
     const skinColor = getRandomArrayEl(SKIN_COLORS);
     const headStyle = getRandomArrayEl(HEAD_STYLES);
+    const hasFacialHair = Math.random() >= 0.75;
+    const facialHair = getRandomArrayEl(FACIAL_HAIR);
+
+    const src = `https://api.dicebear.com/9.x/open-peeps/svg?face=calm&backgroundColor=${getRandomHex()}&flip=${isFacingLeft}&skinColor=${
+      skinColor.hex
+    }&head=${headStyle.code}&facialHairProbability=${
+      hasFacialHair ? 100 : 0
+    }&facialHair=${facialHair.code}`;
+    const alt = `An avatar with ${skinColor.label} skin, ${
+      headStyle.description
+    }, and ${
+      hasFacialHair ? facialHair.description : "no facial hair"
+    } facing ${isFacingLeft ? "left" : "right"}`;
     return {
-      src: `https://api.dicebear.com/9.x/open-peeps/svg?face=calm&backgroundColor=${getRandomHex()}&flip=${isFacingLeft}&skinColor=${
-        skinColor.hex
-      }&head=${headStyle.code}`,
-      alt: `An avatar with ${skinColor.label} skin and ${
-        headStyle.description
-      } facing ${isFacingLeft ? "left" : "right"}`,
+      src,
+      alt,
       name,
       skinColor,
       headStyle,
+      facialHair: hasFacialHair ? facialHair : null,
     };
   });
   boardArr.forEach((el) => {
@@ -118,5 +155,11 @@ window.addEventListener("load", function () {
 //   event.target.parentNode.classList.toggle("flipped");
 // });
 
-startButton.addEventListener("click", toggleGame);
-endButton.addEventListener("click", toggleGame);
+startButton.addEventListener("click", function () {
+  toggleGame();
+  selectCards();
+});
+endButton.addEventListener("click", function () {
+  toggleGame();
+  location.reload();
+});

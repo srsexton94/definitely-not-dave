@@ -43,6 +43,12 @@ h1 {
   margin: 1rem;
 }
 
+.selected-cards {
+  display: flex;
+  justify-content: space-evenly;
+  padding: 1rem;
+}
+
 .hidden {
   display: none;
 }

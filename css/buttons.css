@@ -39,8 +39,13 @@ button:focus {
 button.start {
   margin-top: 1rem;
 }
+
+button.small {
+  padding: 0.25rem;
+  font-size: 0.75rem;
+}
 button.end {
   position: absolute;
   bottom: 1rem;
-  left: 35%;
+  left: 40%;
 }

@@ -8,6 +8,11 @@
   font-size: 0.75rem;
 }
 
+.card-label {
+  font-weight: bold;
+  width: var(--cardSize);
+}
+
 .inner {
   width: 100%;
   height: 100%;
