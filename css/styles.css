@@ -1,3 +1,22 @@
+:root {
+  --cardSize: 8rem;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 h1 {
-  color: purple;
+  text-align: center;
+}
+
+.gameboard {
+  display: grid;
+  grid-template-columns: repeat(4, var(--cardSize));
+  grid-template-rows: repeat(4, var(--cardSize));
+  grid-gap: 1rem;
+  width: max-content;
+  margin: auto;
 }
