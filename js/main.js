@@ -1,3 +1,6 @@
+/* --------------------------------------------------- */
+/* --------------------- CONSTANTS ------------------- */
+/* --------------------------------------------------- */
 const SKIN_COLORS = [
   { hex: "694d3d", label: "dark" },
   { hex: "ae5d29", label: "medium" },
@@ -49,14 +52,22 @@ const NAMES = [
   "Skylar",
 ];
 
+/* --------------------------------------------------- */
+/* ------------------ ELEMENT REFS ------------------- */
+/* --------------------------------------------------- */
 const gameboard = document.querySelector("section.gameboard");
 const controls = document.querySelector("section.controls");
 const startButton = document.querySelector("button.start");
 const endButton = document.querySelector("button.end");
 const selectionContainer = document.querySelector(".selected-cards");
+const modalBackdrop = document.getElementById("guessModal");
 
 let boardArr, playerCard, computerCard;
+let isStarted = false;
 
+/* --------------------------------------------------- */
+/* ---------------- HELPER FUNCTIONS ----------------- */
+/* --------------------------------------------------- */
 function createCardHTML(src, alt, label = "", isFlippedUp = false) {
   return `
     ${label ? "<div>" : ""}
@@ -90,6 +101,9 @@ function getRandomArrayEl(array) {
   return array[randomIndex];
 }
 
+/* --------------------------------------------------- */
+/* -------------------- GAME LOGIC ------------------- */
+/* --------------------------------------------------- */
 function toggleGame() {
   startButton.classList.toggle("hidden");
   endButton.classList.toggle("hidden");
@@ -97,6 +111,7 @@ function toggleGame() {
     .querySelectorAll("div.inner")
     .forEach((card) => card.classList.toggle("flipped"));
   document.querySelector("form").classList.toggle("hidden");
+  isStarted = !isStarted;
 }
 
 function selectCards() {
@@ -117,6 +132,27 @@ function selectCards() {
   selectionContainer.appendChild(computerCardEl);
 }
 
+function closeGuessModal() {
+  modalBackdrop.style.display = "none";
+}
+
+function openGuessModal(target) {
+  const card = boardArr.find((card) => card.src === target.src);
+
+  modalBackdrop.style.display = "block";
+  document.querySelector("div.modal-body").innerHTML = `
+    <h2>So you think they have...</h2>
+    ${createCardHTML(card.src, card.alt, card.name, true)}
+    <div class="modal-buttons">
+      <button onclick="closeGuessModal()">No</button>
+      <button>Yes</button>
+    </div>
+  `;
+}
+
+/* --------------------------------------------------- */
+/* ----------------- EVENT LISTENERS ----------------- */
+/* --------------------------------------------------- */
 window.addEventListener("load", function () {
   boardArr = NAMES.map((name) => {
     const isFacingLeft = Math.random() >= 0.5;
@@ -153,10 +189,6 @@ window.addEventListener("load", function () {
   });
 });
 
-// gameboard.addEventListener("click", function (event) {
-//   event.target.parentNode.classList.toggle("flipped");
-// });
-
 startButton.addEventListener("click", function () {
   toggleGame();
   selectCards();
@@ -164,4 +196,16 @@ startButton.addEventListener("click", function () {
 endButton.addEventListener("click", function () {
   toggleGame();
   location.reload();
+});
+gameboard.addEventListener("click", function (event) {
+  if (isStarted) {
+    openGuessModal(event.target);
+  }
+});
+// Closing the modal
+document
+  .querySelector(".modal-close")
+  .addEventListener("click", closeGuessModal);
+window.addEventListener("click", function (event) {
+  if (event.target === modalBackdrop) closeGuessModal();
 });

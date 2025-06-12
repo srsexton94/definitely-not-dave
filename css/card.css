@@ -10,6 +10,7 @@
 
 .card-label {
   font-weight: bold;
+  text-align: center;
   width: var(--cardSize);
 }
 
