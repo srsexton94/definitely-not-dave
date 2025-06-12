@@ -40,7 +40,10 @@
 }
 
 .front {
-  background-color: #b7b7b7;
+  background-image: url("../images/cardback.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .back {

@@ -122,7 +122,7 @@ window.addEventListener("load", function () {
     const isFacingLeft = Math.random() >= 0.5;
     const skinColor = getRandomArrayEl(SKIN_COLORS);
     const headStyle = getRandomArrayEl(HEAD_STYLES);
-    const hasFacialHair = Math.random() >= 0.75;
+    const hasFacialHair = Math.random() >= 0.8;
     const facialHair = getRandomArrayEl(FACIAL_HAIR);
 
     const src = `https://api.dicebear.com/9.x/open-peeps/svg?face=calm&backgroundColor=${getRandomHex()}&flip=${isFacingLeft}&skinColor=${
@@ -130,11 +130,13 @@ window.addEventListener("load", function () {
     }&head=${headStyle.code}&facialHairProbability=${
       hasFacialHair ? 100 : 0
     }&facialHair=${facialHair.code}`;
+
     const alt = `An avatar with ${skinColor.label} skin, ${
       headStyle.description
     }, and ${
       hasFacialHair ? facialHair.description : "no facial hair"
     } facing ${isFacingLeft ? "left" : "right"}`;
+
     return {
       src,
       alt,
